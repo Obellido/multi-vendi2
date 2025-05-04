@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { findUserByUsername, getPermissionsForPerfil } from '@/server/models/userModel'
+import { findUserByUsername, getPermissionsForPerfil } from '@/server/repositories/userRepository'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()

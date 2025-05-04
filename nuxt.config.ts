@@ -10,6 +10,10 @@ export default defineNuxtConfig({
         JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
         TOKEN_EXPIRES_IN: process.env.TOKEN_EXPIRES_IN,
         REFRESH_TOKEN_EXPIRES_IN: process.env.REFRESH_TOKEN_EXPIRES_IN,
+        USERDB: process.env.USERDB || 'admin',
+        PASSDB: process.env.PASSDB || 'admin',
+        URLDB: process.env.URLDB || 'http://localhost:5984',
+        NAMEDB: process.env.NAMEDB || 'vendi2',
     },
     modules: [
         "@nuxtjs/tailwindcss",

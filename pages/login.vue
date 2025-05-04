@@ -1,5 +1,6 @@
 <template>
     <div class="flex items-center justify-center min-h-screen bg-gray-100">
+      <Toast />
       <Card class="w-full max-w-md shadow-2xl">
         <template #title>
           <div class="text-center text-2xl font-bold">Iniciar Sesión</div>
@@ -47,9 +48,10 @@
   
   <script setup>
   import { ref } from 'vue'
-  
+  import { useToast } from 'primevue/usetoast'
   import { useAuthStore } from '@/stores/authStore'
 
+  const toast = useToast()
   const auth = useAuthStore()
   
   const usuario = ref('')
@@ -77,6 +79,7 @@
       })
       .catch((error) => {
         loading.value = false
+        toast.add({ severity: 'error', summary: 'Error de inicio de sesión', detail: error?.message || 'Usuario o contraseña incorrectos', life: 4000 })
         // Manejar el error de inicio de sesión (ej. mostrar un mensaje de error)
         console.error('Error de inicio de sesión:', error)
       })

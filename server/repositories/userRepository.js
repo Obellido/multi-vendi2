@@ -1,13 +1,15 @@
-// models/userModel.js
+// models/userRepository.js
 
-import { perfiles, perfilAcciones, acciones, modulos } from '@/server/models/dummyPermissions' 
-const users = [
-  { id: 1, username: 'admin', password: '123456', perfil_id: 1 },
-  { id: 2, username: 'acomodador', password: '123456', perfil_id: 2 },
-]
+import { perfiles, perfilAcciones, acciones, modulos } from '@/server/models/dummyPermissions'
+import { getUserByUsername } from '@/server/services/userService'
+
+// const users = [
+//   { id: 1, username: 'admin', password: '123456', perfil_id: 1 },
+//   { id: 2, username: 'acomodador', password: '123456', perfil_id: 2 },
+// ]
 
 export async function findUserByUsername(username) {
-  return users.find(u => u.username === username) || null
+  return await getUserByUsername(username)
 }
 
 export async function getPermissionsForPerfil(perfil_id) {
