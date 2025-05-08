@@ -1,7 +1,7 @@
 // models/userRepository.js
 
 import { perfiles, perfilAcciones, acciones, modulos } from '@/server/models/dummyPermissions'
-import { getUserByUsername } from '@/server/services/userService'
+import { getUserByUsername } from '@/server/services/userService' 
 
 // const users = [
 //   { id: 1, username: 'admin', password: '123456', perfil_id: 1 },

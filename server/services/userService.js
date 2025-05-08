@@ -1,10 +1,18 @@
 // services/userService.js
 import DbService from './DbService.js'
 
-export async function getUserByUsername(username) {
+export async function getUserByUsername(event,username) {
   try {
-    const docs = await DbService.find({ username: username, tipo: 'Usuario' })
-    return docs[0] || null
+    // Using design view to query users by username
+    const result = await DbService.view(event,'user', 'byUsername', {
+      key: username.toLowerCase(),
+      include_docs: true
+    });
+
+
+    // Return first matching user document or null if none found
+    return result.rows.length > 0? result.rows[0].doc : null;
+    
   } catch (error) {
     console.error('Error obteniendo usuario:', error)
     throw error

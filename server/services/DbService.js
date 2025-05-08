@@ -1,60 +1,44 @@
 // services/DbService.js
-import nano from 'nano'
-import { useRuntimeConfig } from '#imports'
-
-const config = useRuntimeConfig()
-const user = config.USERDB
-const pass = config.PASSDB
-const url = config.URLDB
-const dbName = config.NAMEDB
-
-const fullUrl = url.includes('://') ? url.replace(/\/$/, '') : `http://${url.replace(/\/$/, '')}`
-const authUrl = fullUrl.replace('://', `://${user}:${pass}@`)
-
-const couch = nano(authUrl)
-const db = couch.db.use(dbName)
-
 class DbService {
-  static async find(selector) {
-    try {
-      const result = await db.find({ selector })
-      return result.docs
-    } catch (error) {
-      console.error('Error en consulta general:', error)
-      throw error
-    }
+  static resolveDb(event) {
+    const db = event.context?.db
+    if (!db) throw new Error('❌ No se ha definido una base de datos en el contexto del request.')
+    return db
   }
 
-  static async insert(doc) {
-    try {
-      const response = await db.insert(doc)
-      return response
-    } catch (error) {
-      console.error('Error insertando documento:', error)
-      throw error
-    }
+  static async view(event, designDoc, viewName, options = {}) {
+    const db = this.resolveDb(event)
+    return await db.view(designDoc, viewName, options)
   }
 
-  static async update(id, doc) {
-    try {
-      const existing = await db.get(id)
-      const response = await db.insert({ ...existing, ...doc })
-      return response
-    } catch (error) {
-      console.error('Error actualizando documento:', error)
-      throw error
-    }
+  static async get(event, id) {
+    const db = this.resolveDb(event)
+    return await db.get(id)
   }
 
-  static async delete(id) {
-    try {
-      const doc = await db.get(id)
-      const response = await db.destroy(id, doc._rev)
-      return response
-    } catch (error) {
-      console.error('Error eliminando documento:', error)
-      throw error
-    }
+  static async find(event, selector, options = {}) {
+    const db = this.resolveDb(event)
+    const query = { selector }
+    if (options.limit) query.limit = options.limit
+    if (options.skip) query.skip = options.skip
+    return (await db.find(query)).docs
+  }
+
+  static async insert(event, doc) {
+    const db = this.resolveDb(event)
+    return await db.insert(doc)
+  }
+
+  static async update(event, id, doc) {
+    const db = this.resolveDb(event)
+    const existing = await db.get(id)
+    return await db.insert({ ...existing, ...doc })
+  }
+
+  static async delete(event, id) {
+    const db = this.resolveDb(event)
+    const doc = await db.get(id)
+    return await db.destroy(id, doc._rev)
   }
 }
 

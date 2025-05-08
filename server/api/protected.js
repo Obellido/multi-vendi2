@@ -2,7 +2,7 @@
 import { requirePermission } from '@/server/utils/requirePermission'
 
 export default defineEventHandler(async (event) => {
-  const user = requirePermission(event, 'Stock', 'Eliminar') // 👈 Protegido
+  const user = requirePermission(event, 'Stock', 'Listar') // 👈 Protegido
 
   const body = await readBody(event)
 

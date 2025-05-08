@@ -5,14 +5,6 @@ import { useRouter } from 'vue-router'
 import { startIdleWatcher, useIdleStatus, clearIdleEvent } from '@/services/idleService'
 import { useBreakpoints } from '@vueuse/core'
 
-import Menubar from 'primevue/menubar'
-import PanelMenu from 'primevue/panelmenu'
-import Sidebar from 'primevue/sidebar'
-import Button from 'primevue/button'
-import Dialog from 'primevue/dialog'
-import InputText from 'primevue/inputtext'
-import Tag from 'primevue/tag'
-
 const auth = useAuthStore()
 const router = useRouter()
 const { isIdle: idleStatus, countdown, idleEvent } = useIdleStatus()

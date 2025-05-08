@@ -1,12 +1,14 @@
 import jwt from 'jsonwebtoken'
-import { findUserByUsername, getPermissionsForPerfil } from '@/server/repositories/userRepository'
+import { getPermissionsForPerfil } from '@/server/repositories/userRepository'
+import { getUserByUsername } from '@/server/services/userService'
 
 export default defineEventHandler(async (event) => {
+  
   const config = useRuntimeConfig()
   const body = await readBody(event)
   const { username, password } = body
 
-  const user = await findUserByUsername(username)
+  const user = await getUserByUsername(event,username)
 
   if (!user || user.password !== password) {
     throw createError({ statusCode: 401, statusMessage: 'Credenciales inválidas' })
@@ -16,7 +18,7 @@ export default defineEventHandler(async (event) => {
   const userAgent = getHeader(event, 'user-agent') || 'unknown'
 
   const userData = {
-    id: user.id,
+    id: user._id,
     username: user.username,
     profileId: user.perfil_id,
     permissions,

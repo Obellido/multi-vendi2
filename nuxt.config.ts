@@ -14,6 +14,7 @@ export default defineNuxtConfig({
         PASSDB: process.env.PASSDB || 'admin',
         URLDB: process.env.URLDB || 'http://localhost:5984',
         NAMEDB: process.env.NAMEDB || 'vendi2',
+        MAIN_DOMAIN: process.env.MAIN_DOMAIN || 'localhost:3000',
     },
     modules: [
         "@nuxtjs/tailwindcss",
